@@ -1,6 +1,4 @@
 flask
 gunicorn
-tensorflow
-tensorflow-lite
 opencv-python
 numpy
