@@ -1,3 +1,6 @@
+
+
+index.html 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,6 +94,13 @@ button {
     </audio>
     
     <script>
+                navigator.mediaDevices.getUserMedia({ video: true })
+  .then((stream) => {
+    document.getElementById("videoElement").srcObject = stream;
+  })
+  .catch((err) => {
+    console.error("Camera access denied:", err);
+  });
         let currentMode = ""; // To track the current mode
         let audioPlayer = document.getElementById("audioPlayer");
         let audioSource = document.getElementById("audioSource");

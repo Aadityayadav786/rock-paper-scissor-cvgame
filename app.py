@@ -1,4 +1,6 @@
+
 from flask import Flask, render_template, Response
+from flask_cors import CORS
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -6,6 +8,7 @@ import time
 import random
 
 app = Flask(__name__)
+CORS(app)  # Now use CORS
 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
@@ -110,3 +113,6 @@ def video_feed():
 
 if __name__ == '__main__':
     app.run(debug=True)
+      
+
+
