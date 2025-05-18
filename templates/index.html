@@ -1,128 +1,107 @@
-
-
-index.html 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Paper Scissors - Hand Gesture Game</title>
-    <h4>Be ready every 5 seconds!</h4>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #222;
-            color: white;
-        }
-        h1 {
-            margin-top: 20px;
-        }
-        video {
-            border: 3px solid white;
-            margin-top: 20px;
-        }
-        .controls {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-        }
-        .fun-mode { background-color: #4CAF50; color: white; }
-        .serious-mode { background-color: #f44336; color: white; }
-
-        /* Make images & video responsive */
-img, video {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Responsive button adjustments */
-.controls {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically on small screens */
-    align-items: center;
-}
-
-button {
-    width: 90%; /* Increase button width for easy tap */
-    max-width: 300px; /* Prevent too wide buttons */
-    padding: 12px;
-    font-size: 18px; /* Bigger text for better readability */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rock Paper Scissors - Hand Gesture Game</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: white;
+    }
     h1 {
-        font-size: 22px; /* Reduce heading size for mobile */
+      margin-top: 20px;
     }
     h4 {
-        font-size: 16px;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    video, img {
+      border: 3px solid white;
+      margin-top: 20px;
+      max-width: 100%;
+      height: auto;
     }
     .controls {
-        flex-direction: column;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     button {
+      padding: 12px;
+      font-size: 18px;
+      width: 90%;
+      max-width: 300px;
+      cursor: pointer;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    .fun-mode {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .serious-mode {
+      background-color: #f44336;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 22px;
+      }
+      h4 {
+        font-size: 16px;
+      }
+      button {
         font-size: 16px;
         padding: 10px;
-        margin: 5px 0; /* Add spacing between buttons */
+      }
     }
-}
-
-    </style>
+  </style>
 </head>
 <body>
-    <h1>Rock Paper Scissors - Hand Gesture Game</h1>
-    
-    <div>
-        <img id="videoFeed" src="{{ url_for('video_feed') }}" width="640" height="480">
-    </div>
-    
-    <div class="controls">
-        <button class="fun-mode" onclick="toggleAudio('fun')">Fun Mode 🎵</button>
-        <button class="serious-mode" onclick="toggleAudio('serious')">Serious Mode 🔥</button>
-    </div>
-    
-    <audio id="audioPlayer" loop>
-        <source id="audioSource" src="" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    
-    <script>
-                navigator.mediaDevices.getUserMedia({ video: true })
-  .then((stream) => {
-    document.getElementById("videoElement").srcObject = stream;
-  })
-  .catch((err) => {
-    console.error("Camera access denied:", err);
-  });
-        let currentMode = ""; // To track the current mode
-        let audioPlayer = document.getElementById("audioPlayer");
-        let audioSource = document.getElementById("audioSource");
+  <h1>Rock Paper Scissors - Hand Gesture Game</h1>
+  <h4>Be ready every 5 seconds!</h4>
 
-        function toggleAudio(mode) {
-            if (currentMode === mode && !audioPlayer.paused) {
-                // If the same mode is clicked again and audio is playing, stop it
-                audioPlayer.pause();
-                audioPlayer.currentTime = 0; // Reset audio
-                currentMode = ""; // Reset mode
-            } else {
-                // Play new audio
-                if (mode === "fun") {
-                    audioSource.src = "{{ url_for('static', filename='audio/music1.mp3') }}";
-                } else if (mode === "serious") {
-                    audioSource.src = "{{ url_for('static', filename='audio/music2.mp3') }}";
-                }
-                audioPlayer.load();
-                audioPlayer.play();
-                currentMode = mode; // Update current mode
-            }
+  <div>
+    <img id="videoFeed" src="{{ url_for('video_feed') }}" width="640" height="480" alt="Video Feed">
+  </div>
+
+  <div class="controls">
+    <button class="fun-mode" onclick="toggleAudio('fun')">Fun Mode 🎵</button>
+    <button class="serious-mode" onclick="toggleAudio('serious')">Serious Mode 🔥</button>
+  </div>
+
+  <audio id="audioPlayer" loop>
+    <source id="audioSource" src="" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    let currentMode = "";
+    const audioPlayer = document.getElementById("audioPlayer");
+    const audioSource = document.getElementById("audioSource");
+
+    function toggleAudio(mode) {
+      if (currentMode === mode && !audioPlayer.paused) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        currentMode = "";
+      } else {
+        if (mode === "fun") {
+          audioSource.src = "{{ url_for('static', filename='audio/music1.mp3') }}";
+        } else if (mode === "serious") {
+          audioSource.src = "{{ url_for('static', filename='audio/music2.mp3') }}";
         }
-    </script>
+        audioPlayer.load();
+        audioPlayer.play();
+        currentMode = mode;
+      }
+    }
+  </script>
 </body>
 </html>
