@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, Response
 from flask_cors import CORS
 import cv2
@@ -6,9 +5,10 @@ import mediapipe as mp
 import numpy as np
 import time
 import random
+import os
 
 app = Flask(__name__)
-CORS(app)  # Now use CORS
+CORS(app)  # Enable CORS
 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
@@ -55,7 +55,6 @@ def generate_frames():
             break
         
         frame = cv2.flip(frame, 1)
-        h, w, _ = frame.shape
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = hands.process(rgb_frame)
         
@@ -112,9 +111,5 @@ def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(debug=True)
-      
-if __name__ == "__main__":
-    app.run()
-
-
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
