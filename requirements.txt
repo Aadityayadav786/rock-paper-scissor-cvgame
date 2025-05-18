@@ -2,5 +2,6 @@ flask
 flask-cors
 mediapipe
 opencv-python
+opencv-python-headless
 numpy
 gunicorn
